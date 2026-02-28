@@ -6,7 +6,7 @@
     "esModuleInterop": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "paths": { "@louharya/shared": ["../../packages/shared/src/index.ts"] }
+    "paths": { "@louharya/shared": ["../../packages/shared/dist/index.d.ts"] }
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist"]

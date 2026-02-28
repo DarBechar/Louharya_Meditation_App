@@ -1,0 +1,11 @@
+node_modules/
+dist/
+.env
+*.log
+
+# Expo
+.expo/
+apps/mobile/.expo/
+
+# Prisma migrations generated
+apps/api/src/prisma/migrations/migration_lock.toml

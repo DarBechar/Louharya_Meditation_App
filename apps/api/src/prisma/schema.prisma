@@ -1,0 +1,94 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(cuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  avatarUrl    String?
+  isActive     Boolean   @default(true)
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions  MeditationSession[]
+  favorites Favorite[]
+
+  @@map("users")
+}
+
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  domain      String
+  description String
+  iconName    String
+  color       String
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+
+  meditations Meditation[]
+
+  @@map("categories")
+}
+
+model Meditation {
+  id              String   @id @default(cuid())
+  title           String
+  subtitle        String?
+  description     String
+  durationMinutes Int
+  difficulty      String
+  format          String
+  thumbnailUrl    String?
+  isFeatured      Boolean  @default(false)
+  isPublished     Boolean  @default(false)
+  tags            String[] @default([])
+  sortOrder       Int      @default(0)
+  content         Json
+  categoryId      String
+  category        Category @relation(fields: [categoryId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  sessions  MeditationSession[]
+  favorites Favorite[]
+
+  @@map("meditations")
+}
+
+model MeditationSession {
+  id                       String    @id @default(cuid())
+  status                   String    @default("in_progress")
+  durationCompletedSeconds Int       @default(0)
+  completionPercent        Int       @default(0)
+  lastStepReached          Int?
+  notes                    String?
+  userId                   String
+  user                     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meditationId             String
+  meditation               Meditation @relation(fields: [meditationId], references: [id])
+  startedAt                DateTime  @default(now())
+  completedAt              DateTime?
+
+  @@index([userId, startedAt])
+  @@map("meditation_sessions")
+}
+
+model Favorite {
+  id           String     @id @default(cuid())
+  userId       String
+  user         User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  meditationId String
+  meditation   Meditation @relation(fields: [meditationId], references: [id])
+  createdAt    DateTime   @default(now())
+
+  @@unique([userId, meditationId])
+  @@map("favorites")
+}

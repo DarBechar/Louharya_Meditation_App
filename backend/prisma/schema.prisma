@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String    @id @default(uuid())
+  email        String    @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  sessions     Session[]
+
+  @@map("users")
+}
+
+model Category {
+  id           String       @id @default(uuid())
+  name         String       @unique
+  description  String
+  icon         String       // icon name (e.g. "heart", "moon", "sun")
+  color        String       // hex color for UI
+  order        Int          @default(0)
+  meditations  Meditation[]
+
+  @@map("categories")
+}
+
+model Meditation {
+  id          String    @id @default(uuid())
+  title       String
+  description String
+  duration    Int       // duration in seconds
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id])
+  audioUrl    String?   // URL to audio file (null = guided text only)
+  guideSteps  Json      // array of { time: number, text: string }
+  tags        String[]
+  level       Level     @default(BEGINNER)
+  isPublished Boolean   @default(false)
+  order       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  sessions    Session[]
+
+  @@map("meditations")
+}
+
+model Session {
+  id               String     @id @default(uuid())
+  userId           String
+  user             User       @relation(fields: [userId], references: [id])
+  meditationId     String
+  meditation       Meditation @relation(fields: [meditationId], references: [id])
+  durationComplete Int        // seconds actually completed
+  completedAt      DateTime   @default(now())
+  notes            String?
+
+  @@map("sessions")
+}
+
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}

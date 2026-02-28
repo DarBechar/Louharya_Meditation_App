@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "@louharya/shared": ["../../packages/shared/src/index.ts"],
+      "@/*": ["./*"]
+    }
+  }
+}

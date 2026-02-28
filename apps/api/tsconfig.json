@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "target": "ES2020",
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "outDir": "./dist",
+    "rootDir": "./src",
+    "paths": { "@louharya/shared": ["../../packages/shared/src/index.ts"] }
+  },
+  "include": ["src"],
+  "exclude": ["node_modules", "dist"]
+}

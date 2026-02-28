@@ -11,7 +11,8 @@
     "dev": "turbo run dev",
     "build": "turbo run build",
     "typecheck": "turbo run typecheck",
-    "lint": "turbo run lint"
+    "lint": "turbo run lint",
+    "build:web": "npm run build --workspace=packages/shared && cd apps/mobile && npx expo export -p web"
   },
   "devDependencies": {
     "turbo": "^2.0.0",

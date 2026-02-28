@@ -1,6 +1,6 @@
 {
-  "buildCommand": "npm run build --workspace=packages/shared && cd apps/mobile && npx expo export -p web",
+  "buildCommand": "npm run build --workspace=@louharya/shared && cd apps/mobile && npx expo export -p web",
   "outputDirectory": "apps/mobile/dist",
-  "installCommand": "npm install --legacy-peer-deps",
+  "installCommand": "npm install --legacy-peer-deps --workspaces --include-workspace-root",
   "framework": null
 }
